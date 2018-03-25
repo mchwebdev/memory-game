@@ -15,6 +15,13 @@ You can reset the game at any time by clicking the reset icon.
 There is no time limit, time starts on first click.
 
 
+## Code Dependencies
+
+The app is built with the following code dependencies:
+
+- [Bootstrap font awesome](https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css)
+
+
 ## Want to try it out?
 
 To play, visit [memory game](https://mchwebdev.github.io/memory-game/)

@@ -1,5 +1,6 @@
 // Array of cards
-const cards = ['fa-diamond', 'fa-diamond', 'fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-bolt', 'fa-bolt', 'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bomb', 'fa-bomb'];
+const cards = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+const doubledCards = cards.concat(cards);
 let openCards = [];
 let moves = 0;
 let matchesFound = 0;
@@ -26,7 +27,7 @@ function shuffle(array) {
 
 // Create a new board adding html to the DOM
 function newBoard() {
-	const shuffledDeck = shuffle(cards);
+	const shuffledDeck = shuffle(doubledCards);
 	let output = '';
 	const deck = document.querySelector('.deck');
 	for (let i = 0; i < shuffledDeck.length; i++) {
