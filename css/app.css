@@ -21,6 +21,7 @@ body {
 body {
     background: #fff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
+    font-size: 16px;
 }
 
 .container {
@@ -40,8 +41,8 @@ body {
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font: 300 6em 'Amatic SC', cursive;
+    margin: 0;
 }
 
 /*
@@ -52,7 +53,7 @@ h1 {
     width: 660px;
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
+    padding: 1.1em;
     border-radius: 10px;
     -webkit-box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
             box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -63,7 +64,7 @@ h1 {
         flex-wrap: wrap;
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
-            justify-content: space-between;
+            justify-content: space-around;
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
@@ -122,8 +123,9 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 600px;
     margin-bottom: 10px;
+    font-size: 1.4em;
 }
 
 .score-panel .stars {
@@ -139,7 +141,7 @@ h1 {
 }
 
 .timer {
-    margin-left: 4em;
+    margin-left: 3.3em;
 }
 
 .score-panel .restart {
