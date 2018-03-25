@@ -214,10 +214,30 @@ h1 {
       margin: 1%;
     }
     .score-panel {
-      max-width: 65%;
-      font-size: 0.8em;
+      max-width: 280px;
+      font-size: 0.7em;
     }
     .timer {
-      margin-left: 1em;
+      margin-left: 2.2em;
     }
-  }
+}
+  
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+    .deck {
+        max-width: 480px;
+        min-height: 480px;
+        padding: 1.5%;
+    }
+    .deck .card {
+        height: 105px;
+        width: 23%;
+        margin: 1%;
+    }
+    .score-panel {
+        max-width: 460px;
+        font-size: 1.2em;
+    }
+    .timer {
+        margin-left: 1.8em;
+    }
+}
