@@ -111,6 +111,7 @@ h1 {
     cursor: default;
     background: #02ccba;
     font-size: 33px;
+    pointer-events: none;
 }
 
 .deck .card.no-match {
@@ -220,4 +221,3 @@ h1 {
       margin-left: 1em;
     }
   }
-  
