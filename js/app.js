@@ -1,9 +1,16 @@
+// Variable declarations
 // Array of cards
-const cards = ['fa-diamond', 'fa-diamond', 'fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-bolt', 'fa-bolt', 'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-bicycle', 'fa-bicycle', 'fa-bomb', 'fa-bomb'];
+const cards = ['fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb'];
+const doubledCards = cards.concat(cards);
 let openCards = [];
-let moves = 0;
-let matchesFound = 0;
-let starRating = 3;
+
+// Utils stores shuffle and startTimer functions
+const utils = {};
+const game = {
+	moves: 0,
+	matchesFound: 0,
+	starRating: 3
+};
 let timer;
 let sec = 0;
 const seconds = document.querySelectorAll('.seconds');
@@ -11,7 +18,7 @@ const minutes = document.querySelectorAll('.minutes');
 const card = document.getElementsByClassName('card');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
+utils.shuffle = function(array) {
 	var currentIndex = array.length,
 		temporaryValue, randomIndex;
 	while (currentIndex !== 0) {
@@ -22,11 +29,33 @@ function shuffle(array) {
 		array[randomIndex] = temporaryValue;
 	}
 	return array;
-}
+};
+
+// Function to start the timer on the first click
+utils.startTimer = function() {
+	// Remove the event listener to prevent timer to trigger more than once
+	for (let i = 0; i < card.length; i++) {
+		card[i].removeEventListener('click', utils.startTimer);
+	}
+
+	function time(val) {
+		return val > 9 ? val : '0' + val;
+	}
+	timer = setInterval(function () {
+
+		// Updates the innerText of the timer during playing
+		seconds[0].innerText = time(++sec % 60);
+		minutes[0].innerText = time(parseInt(sec / 60, 10));
+
+		// Updates the innerText of the popup when the game is won
+		seconds[1].innerText = seconds[0].innerText;
+		minutes[1].innerText = minutes[0].innerText;
+	}, 1000);
+};
 
 // Create a new board adding html to the DOM
 function newBoard() {
-	const shuffledDeck = shuffle(cards);
+	const shuffledDeck = utils.shuffle(doubledCards);
 	let output = '';
 	const deck = document.querySelector('.deck');
 	for (let i = 0; i < shuffledDeck.length; i++) {
@@ -74,8 +103,8 @@ function playMemory(e) {
 			}
 
 			// Update the matches found and the move count (two cards turned equals 1 move)
-			matchesFound += 1;
-			moves++;
+			game.matchesFound += 1;
+			game.moves += 1;
 
 			// Reset the openCards array
 			resetOpenCards();
@@ -95,7 +124,7 @@ function playMemory(e) {
 				openCards[1].classList.remove('show', 'open', 'no-match');
 				resetOpenCards();
 			}, 800);
-			moves++;
+			game.moves += 1;
 
 			// setTimeout to reset the eventListener
 			setTimeout(function () {
@@ -119,31 +148,31 @@ function resetOpenCards() {
 // Update HTML with the number of moves
 function updateMoves() {
 	const moveCounter = document.querySelector('.moves');
-	if (moves === 1) {
-		moveCounter.innerText = `${moves} Move`;
+	if (game.moves === 1) {
+		moveCounter.innerText = `${game.moves} Move`;
 	} else {
-		moveCounter.innerText = `${moves} Moves`;
+		moveCounter.innerText = `${game.moves} Moves`;
 	}
 }
 
 // Function to update the star rating
 function updateStarRating() {
 	const star = document.querySelectorAll('.star');
-	if (moves > 0 && moves < 14) {
-		starRating = starRating;
-	} else if (moves >= 14 && moves <= 19) {
+	if (game.moves > 0 && game.moves < 14) {
+		game.starRating = game.starRating;
+	} else if (game.moves >= 14 && game.moves <= 19) {
 		star[2].firstChild.classList.remove('fa-star');
-		starRating = '2';
-	} else if (moves > 19) {
+		game.starRating = '2';
+	} else if (game.moves > 19) {
 		star[1].firstChild.classList.remove('fa-star');
-		starRating = '1';
+		game.starRating = '1';
 	}
 }
 
 
 // Checks if game is won and open popup accordingly
 function popupWinner() {
-	if (matchesFound === 8) {
+	if (game.matchesFound === 8) {
 		const popup = document.querySelector('.win-popup');
 		const totalMoves = document.querySelector('.total-moves');
 		const totalStars = document.querySelector('.total-stars');
@@ -153,37 +182,14 @@ function popupWinner() {
 		clearInterval(timer);
 
 		// Prints the number of moves and the star rating to the popup
-		totalMoves.innerText = moves;
-		totalStars.innerText = starRating;
+		totalMoves.innerText = game.moves;
+		totalStars.innerText = game.starRating;
 
 		// Changes the display:none to flex in order for the popup to be visible
 		popup.style.display = 'flex';
 
 		// Add click event to the play again button to restart the game
 		playAgainBtn.addEventListener('click', () => location.reload());
-	}
-}
-
-// Function to start the timer on the first click
-function startTimer() {
-	let clicks = 0;
-	for (let i = 0; i < card.length; i++) {
-		card[i].addEventListener('click', function () {
-			clicks += 1;
-			if (clicks === 1) {
-				function time(val) {return val > 9 ? val : '0' + val;}
-				timer = setInterval(function () {
-
-					// Updates the innerText of the timer during playing
-					seconds[0].innerText = time(++sec % 60);
-					minutes[0].innerText = time(parseInt(sec / 60, 10));
-
-					// Updates the innerText of the popup when the game is won
-					seconds[1].innerText = time(++sec % 60);
-					minutes[1].innerText = time(parseInt(sec / 60, 10));
-				}, 1000);
-			}
-		});
 	}
 }
 
@@ -196,5 +202,9 @@ function restartGame() {
 // Call functions
 newBoard();
 displayCard();
-startTimer();
 restartGame();
+
+// Click event to call the startTimer function when first card is clicked
+for (let i = 0; i < card.length; i++) {
+	card[i].addEventListener('click', utils.startTimer);
+}
